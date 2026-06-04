@@ -10,7 +10,13 @@ import Profile from "./pages/Profile";
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-slate-900 text-white">
+      <div
+  className="min-h-screen text-[#F5F5F5]"
+  style={{
+    background:
+      "radial-gradient(circle at top, #1A0D30 0%, #0A0A0A 60%)",
+  }}
+>
         <Navbar />
 
         <Routes>
