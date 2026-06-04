@@ -1,11 +1,15 @@
 export default function AuthInput({
   type = "text",
   placeholder,
+  value,
+  onChange,
 }) {
   return (
     <input
       type={type}
       placeholder={placeholder}
+      value={value}
+      onChange={onChange}
       className="
         w-full
         bg-[#121212]
