@@ -2,14 +2,31 @@ import { useState } from "react";
 import AuthInput from "../components/AuthInput";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleSubmit() {
-    console.log({
-      username,
-      password,
-    });
+  async function handleSubmit() {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -23,9 +40,9 @@ export default function Login() {
         <div className="space-y-4">
 
           <AuthInput
-            placeholder="Nombre de usuario"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <AuthInput
