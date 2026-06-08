@@ -9,6 +9,20 @@ export default function Navbar() {
       </Link>
 
       <div className="flex gap-6">
+         <Link
+          to="/profile"
+          className="text-[#BDBDBD] hover:text-white transition"
+        >
+          Perfil
+        </Link>
+
+         <Link
+          to="/library"
+          className="text-[#BDBDBD] hover:text-white transition"
+        >
+          Biblioteca
+        </Link>
+
         <Link
           to="/login"
           className="text-[#BDBDBD] hover:text-white transition"
