@@ -20,10 +20,21 @@ export default function Login() {
           }),
         }
       );
+const data = await response.json();
 
-      const data = await response.json();
+localStorage.setItem(
+  "token",
+  data.token
+);
 
-      console.log(data);
+localStorage.setItem(
+  "user",
+  JSON.stringify(data.user)
+);
+
+console.log("Usuario logueado");
+console.log(data);
+
     } catch (error) {
       console.error(error);
     }
