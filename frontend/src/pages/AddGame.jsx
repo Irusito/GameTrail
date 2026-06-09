@@ -3,33 +3,33 @@ import { useState } from "react";
 export default function AddGame() {
   const [title, setTitle] = useState("");
 
-  async function handleSubmit() {
-    try {
-      const response = await fetch(
-        "http://localhost:5000/api/games",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title,
-            status: "Pendiente",
-            platform: "PC",
+async function handleSubmit() {
+  try {
+    const token = localStorage.getItem("token");
 
-            // ID de prueba de un usuario existente
-            user: "6a27275a4d358a41819817a8",
-          }),
-        }
-      );
+    const response = await fetch(
+      "http://localhost:5000/api/games",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          title,
+          status: "Pendiente",
+          platform: "PC",
+        }),
+      }
+    );
 
-      const data = await response.json();
+    const data = await response.json();
 
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
+    console.log(data);
+  } catch (error) {
+    console.error(error);
   }
+}
 
   return (
     <main className="max-w-md mx-auto py-20">

@@ -7,7 +7,9 @@ const {
   getGames,
 } = require("../controllers/gameController");
 
-router.get("/", getGames);
-router.post("/", createGame);
+const protect = require("../middleware/authMiddleware");
+
+router.get("/", protect, getGames);
+router.post("/", protect, createGame);
 
 module.exports = router;

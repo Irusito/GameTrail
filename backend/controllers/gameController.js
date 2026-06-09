@@ -1,7 +1,9 @@
 const Game = require("../models/Game");
 const getGames = async (req, res) => {
   try {
-    const games = await Game.find();
+    const games = await Game.find({
+  user: req.user.id,
+});
 
     res.status(200).json(games);
   } catch (error) {
@@ -13,7 +15,10 @@ const getGames = async (req, res) => {
 
 const createGame = async (req, res) => {
   try {
-    const game = await Game.create(req.body);
+    const game = await Game.create({
+  ...req.body,
+  user: req.user.id,
+});
 
     res.status(201).json(game);
   } catch (error) {

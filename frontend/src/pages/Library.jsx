@@ -7,9 +7,16 @@ export default function Library() {
   useEffect(() => {
     async function fetchGames() {
       try {
+        const token = localStorage.getItem("token");
+
         const response = await fetch(
-          "http://localhost:5000/api/games"
-        );
+  "http://localhost:5000/api/games",
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
         const data = await response.json();
 

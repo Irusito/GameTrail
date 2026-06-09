@@ -1,6 +1,10 @@
 import { User } from "lucide-react";
 
 export default function Profile() {
+  const user = JSON.parse(
+  localStorage.getItem("user")
+);
+
   const recentGames = [
     {
       title: "Elden Ring",
@@ -41,12 +45,12 @@ export default function Profile() {
           </div>
 
           <h1 className="text-3xl font-bold">
-            Alex
-          </h1>
+  {user?.username}
+</h1>
 
           <p className="text-gray-400 mt-2">
-            Miembro desde junio de 2025
-          </p>
+  {user?.email}
+</p>
 
           <button
             className="
