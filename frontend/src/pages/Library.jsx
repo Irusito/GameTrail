@@ -1,40 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Library() {
   const [filter, setFilter] = useState("Todos");
+  const [games, setGames] = useState([]);
 
-  const games = [
-    {
-      id: 1,
-      title: "Elden Ring",
-      status: "Completado",
-    },
-    {
-      id: 2,
-      title: "Bloodborne",
-      status: "Platinado",
-    },
-    {
-      id: 3,
-      title: "Persona 5 Royal",
-      status: "Jugando",
-    },
-    {
-      id: 4,
-      title: "The Witcher 3",
-      status: "Pendiente",
-    },
-    {
-      id: 5,
-      title: "Cyberpunk 2077",
-      status: "Completado",
-    },
-    {
-      id: 6,
-      title: "Hollow Knight",
-      status: "Pendiente",
-    },
-  ];
+  useEffect(() => {
+    async function fetchGames() {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/games"
+        );
+
+        const data = await response.json();
+
+        setGames(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchGames();
+  }, []);
 
   const filters = [
     "Todos",
@@ -42,16 +28,19 @@ export default function Library() {
     "Jugando",
     "Completado",
     "Platinado",
+    "Abandonado",
   ];
 
   const filteredGames =
     filter === "Todos"
       ? games
-      : games.filter((game) => game.status === filter);
+      : games.filter(
+          (game) => game.status === filter
+        );
 
   return (
     <main className="max-w-7xl mx-auto px-6 py-12">
-      
+
       <h1 className="text-4xl font-bold mb-8">
         Mi Biblioteca
       </h1>
@@ -91,7 +80,7 @@ export default function Library() {
       >
         {filteredGames.map((game) => (
           <div
-            key={game.id}
+            key={game._id}
             className="
               bg-[#121212]
               border
@@ -126,6 +115,10 @@ export default function Library() {
 
               <p className="text-gray-400 mt-1">
                 {game.status}
+              </p>
+
+              <p className="text-gray-500 text-sm">
+                {game.platform}
               </p>
             </div>
           </div>

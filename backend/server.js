@@ -9,6 +9,8 @@ const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
+const gameRoutes = require("./routes/gameRoutes");
+
 // Conexión a MongoDB
 connectDB();
 
@@ -18,6 +20,7 @@ app.use(express.json());
 
 // Rutas
 app.use("/api/auth", authRoutes);
+app.use("/api/games", gameRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend funcionando");
