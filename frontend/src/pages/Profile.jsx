@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 export default function Profile() {
   const user = JSON.parse(
-    localStorage.getItem("user")
-  );
+  localStorage.getItem("user") || "null"
+);
 
   const [games, setGames] = useState([]);
 

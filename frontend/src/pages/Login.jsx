@@ -32,6 +32,8 @@ localStorage.setItem(
   JSON.stringify(data.user)
 );
 
+window.location.href = "/profile";
+
 console.log("Usuario logueado");
 console.log(data);
 
