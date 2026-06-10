@@ -45,6 +45,63 @@ export default function Library() {
           (game) => game.status === filter
         );
 
+        async function deleteGame(id) {
+  try {
+    const token = localStorage.getItem("token");
+
+    await fetch(
+      `http://localhost:5000/api/games/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    setGames(
+      games.filter((game) => game._id !== id)
+    );
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function updateStatus(id, newStatus) {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+      `http://localhost:5000/api/games/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          status: newStatus,
+        }),
+      }
+    );
+
+    const updatedGame =
+      await response.json();
+
+    setGames(
+      games.map((game) =>
+        game._id === id
+          ? updatedGame
+          : game
+      )
+    );
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
   return (
     <main className="max-w-7xl mx-auto px-6 py-12">
 
@@ -127,6 +184,41 @@ export default function Library() {
               <p className="text-gray-500 text-sm">
                 {game.platform}
               </p>
+              <select
+  value={game.status}
+  onChange={(e) =>
+    updateStatus(game._id, e.target.value)
+  }
+  className="
+    mt-3
+    w-full
+    bg-[#1A1A1A]
+    border
+    border-[#2A2A2A]
+    rounded-lg
+    p-2
+  "
+>
+  <option value="Pendiente">Pendiente</option>
+  <option value="Jugando">Jugando</option>
+  <option value="Completado">Completado</option>
+  <option value="Platinado">Platinado</option>
+  <option value="Abandonado">Abandonado</option>
+</select>
+<button
+  onClick={() => deleteGame(game._id)}
+  className="
+    mt-3
+    w-full
+    bg-red-500
+    hover:bg-red-600
+    py-2
+    rounded-lg
+    transition
+  "
+>
+  Eliminar
+</button>
             </div>
           </div>
         ))}
