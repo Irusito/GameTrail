@@ -48,7 +48,7 @@ export default function Profile() {
     (game) => game.status === "Platinado"
   ).length;
 
-  const recentGames = games.slice(-3).reverse();
+  const recentGames = games.slice(-4).reverse();
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-12">
@@ -112,78 +112,109 @@ export default function Profile() {
           mt-8
         "
       >
-        <StatCard
-          value={pendingCount}
-          label="Pendientes"
-        />
+        
+<StatCard
+  value={pendingCount}
+  label="Pendientes"
+  color="bg-orange-500"
+/>
 
-        <StatCard
-          value={playingCount}
-          label="Jugando"
-        />
+<StatCard
+  value={playingCount}
+  label="Jugando"
+  color="bg-blue-500"
+/>
 
-        <StatCard
-          value={completedCount}
-          label="Completados"
-        />
+<StatCard
+  value={completedCount}
+  label="Completados"
+  color="bg-green-500"
+/>
 
-        <StatCard
-          value={platinumCount}
-          label="Platinados"
-        />
+<StatCard
+  value={platinumCount}
+  label="Platinados"
+  color="bg-gray-300"
+/>
       </section>
 
       {/* Últimos videojuegos */}
 
       <section
-        className="
-          bg-[#121212]
-          border
-          border-[#2A2A2A]
-          rounded-2xl
-          p-6
-          mt-8
-        "
-      >
-        <h2 className="text-2xl font-bold mb-4">
-          Últimos videojuegos
-        </h2>
+  className="
+    bg-[#121212]
+    border
+    border-[#2A2A2A]
+    rounded-2xl
+    p-6
+    mt-8
+  "
+>
+  <h2 className="text-2xl font-bold mb-6">
+    Últimos videojuegos añadidos
+  </h2>
 
-        {recentGames.length === 0 ? (
-          <p className="text-gray-400">
-            Todavía no has añadido videojuegos.
-          </p>
-        ) : (
-          <div className="space-y-3">
-            {recentGames.map((game) => (
-              <div
-                key={game._id}
-                className="
-                  flex
-                  justify-between
-                  items-center
-                  bg-[#1A1A1A]
-                  rounded-lg
-                  px-4
-                  py-3
-                "
-              >
-                <span>{game.title}</span>
-
-                <span className="text-gray-400">
-                  {game.status}
-                </span>
-              </div>
-            ))}
+  {recentGames.length === 0 ? (
+    <p className="text-gray-400">
+      Todavía no has añadido videojuegos.
+    </p>
+  ) : (
+    <div
+      className="
+        grid
+        grid-cols-2
+        md:grid-cols-4
+        gap-4
+      "
+    >
+      {recentGames.map((game) => (
+        <div
+          key={game._id}
+          className="
+            bg-[#1A1A1A]
+            rounded-xl
+            overflow-hidden
+            border
+            border-[#2A2A2A]
+          "
+        >
+          <div
+            className="
+              h-48
+              bg-[#252525]
+              flex
+              items-center
+              justify-center
+              text-gray-500
+            "
+          >
+            Carátula
           </div>
-        )}
-      </section>
+
+          <div className="p-3">
+            <h3 className="font-semibold text-sm">
+              {game.title}
+            </h3>
+
+            <p className="text-gray-400 text-xs mt-1">
+              {game.status}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</section>
 
     </main>
   );
 }
 
-function StatCard({ value, label }) {
+function StatCard({
+  value,
+  label,
+  color,
+}) {
   return (
     <div
       className="
@@ -191,16 +222,21 @@ function StatCard({ value, label }) {
         border
         border-[#2A2A2A]
         rounded-xl
-        p-6
-        text-center
+        overflow-hidden
       "
     >
-      <div className="text-3xl font-bold">
-        {value}
-      </div>
+      <div
+        className={`h-2 ${color}`}
+      />
 
-      <div className="text-gray-400 mt-2">
-        {label}
+      <div className="p-6 text-center">
+        <div className="text-3xl font-bold">
+          {value}
+        </div>
+
+        <div className="text-gray-400 mt-2">
+          {label}
+        </div>
       </div>
     </div>
   );

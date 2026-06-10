@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { statusConfig } from "../utils/statusConfig";
 
 export default function Library() {
   const [filter, setFilter] = useState("Todos");
@@ -102,6 +103,28 @@ async function updateStatus(id, newStatus) {
   }
 }
 
+function getStatusStyle(status) {
+  switch (status) {
+    case "Pendiente":
+      return "bg-orange-500 text-white";
+
+    case "Jugando":
+      return "bg-blue-500 text-white";
+
+    case "Completado":
+      return "bg-green-500 text-white";
+
+    case "Platinado":
+      return "bg-gray-300 text-black";
+
+    case "Abandonado":
+      return "bg-red-500 text-white";
+
+    default:
+      return "bg-gray-500 text-white";
+  }
+}
+
   return (
     <main className="max-w-7xl mx-auto px-6 py-12">
 
@@ -111,24 +134,37 @@ async function updateStatus(id, newStatus) {
 
       {/* Filtros */}
 
-      <div className="flex flex-wrap gap-3 mb-10">
-        {filters.map((item) => (
-          <button
-            key={item}
-            onClick={() => setFilter(item)}
-            className={`
-              px-4 py-2 rounded-lg transition
-              ${
-                filter === item
-                  ? "bg-[#FF4242] text-white"
-                  : "bg-[#1A1A1A] hover:bg-[#252525]"
-              }
-            `}
-          >
-            {item}
-          </button>
-        ))}
-      </div>
+  <div className="flex flex-wrap gap-3 mb-10">
+  {filters.map((item) => {
+    const status = statusConfig[item];
+
+    return (
+      <button
+        key={item}
+        onClick={() => setFilter(item)}
+        className={`
+          px-4
+          py-2
+          rounded-lg
+          font-medium
+          transition-all
+          duration-200
+          ${
+            item === "Todos"
+              ? filter === item
+                ? "bg-white text-black"
+                : "bg-[#1A1A1A] hover:bg-[#252525]"
+              : filter === item
+              ? `${status.color} ${status.text}`
+              : `bg-[#1A1A1A] text-white ${status.hover}`
+          }
+        `}
+      >
+        {item}
+      </button>
+    );
+  })}
+</div>
 
       {/* Juegos */}
 
@@ -176,11 +212,22 @@ async function updateStatus(id, newStatus) {
               <h2 className="font-semibold text-lg">
                 {game.title}
               </h2>
-
-              <p className="text-gray-400 mt-1">
-                {game.status}
-              </p>
-
+            <div className="mt-2">
+  <span
+    className={`
+      inline-block
+      px-3
+      py-1
+      rounded-full
+      text-sm
+      font-semibold
+      ${statusConfig[game.status]?.color}
+      ${statusConfig[game.status]?.text}
+    `}
+  >
+    {game.status}
+  </span>
+</div>
               <p className="text-gray-500 text-sm">
                 {game.platform}
               </p>
