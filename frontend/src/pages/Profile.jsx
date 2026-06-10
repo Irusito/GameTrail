@@ -1,24 +1,54 @@
-import { User } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function Profile() {
   const user = JSON.parse(
-  localStorage.getItem("user")
-);
+    localStorage.getItem("user")
+  );
 
-  const recentGames = [
-    {
-      title: "Elden Ring",
-      status: "Completado",
-    },
-    {
-      title: "Persona 5 Royal",
-      status: "Jugando",
-    },
-    {
-      title: "Bloodborne",
-      status: "Platinado",
-    },
-  ];
+  const [games, setGames] = useState([]);
+
+  useEffect(() => {
+    async function fetchGames() {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(
+          "http://localhost:5000/api/games",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        setGames(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchGames();
+  }, []);
+
+  const pendingCount = games.filter(
+    (game) => game.status === "Pendiente"
+  ).length;
+
+  const playingCount = games.filter(
+    (game) => game.status === "Jugando"
+  ).length;
+
+  const completedCount = games.filter(
+    (game) => game.status === "Completado"
+  ).length;
+
+  const platinumCount = games.filter(
+    (game) => game.status === "Platinado"
+  ).length;
+
+  const recentGames = games.slice(-3).reverse();
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-12">
@@ -39,18 +69,19 @@ export default function Profile() {
               items-center
               justify-center
               mb-4
+              text-4xl
             "
           >
-            {/* <User size={50} /> */}
+            🎮
           </div>
 
           <h1 className="text-3xl font-bold">
-  {user?.username}
-</h1>
+            {user?.username}
+          </h1>
 
           <p className="text-gray-400 mt-2">
-  {user?.email}
-</p>
+            {user?.email}
+          </p>
 
           <button
             className="
@@ -82,27 +113,27 @@ export default function Profile() {
         "
       >
         <StatCard
-          value="12"
+          value={pendingCount}
           label="Pendientes"
         />
 
         <StatCard
-          value="4"
+          value={playingCount}
           label="Jugando"
         />
 
         <StatCard
-          value="25"
+          value={completedCount}
           label="Completados"
         />
 
         <StatCard
-          value="5"
+          value={platinumCount}
           label="Platinados"
         />
       </section>
 
-      {/* Últimos juegos */}
+      {/* Últimos videojuegos */}
 
       <section
         className="
@@ -118,28 +149,34 @@ export default function Profile() {
           Últimos videojuegos
         </h2>
 
-        <div className="space-y-3">
-          {recentGames.map((game) => (
-            <div
-              key={game.title}
-              className="
-                flex
-                justify-between
-                items-center
-                bg-[#1A1A1A]
-                rounded-lg
-                px-4
-                py-3
-              "
-            >
-              <span>{game.title}</span>
+        {recentGames.length === 0 ? (
+          <p className="text-gray-400">
+            Todavía no has añadido videojuegos.
+          </p>
+        ) : (
+          <div className="space-y-3">
+            {recentGames.map((game) => (
+              <div
+                key={game._id}
+                className="
+                  flex
+                  justify-between
+                  items-center
+                  bg-[#1A1A1A]
+                  rounded-lg
+                  px-4
+                  py-3
+                "
+              >
+                <span>{game.title}</span>
 
-              <span className="text-gray-400">
-                {game.status}
-              </span>
-            </div>
-          ))}
-        </div>
+                <span className="text-gray-400">
+                  {game.status}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
     </main>
@@ -167,9 +204,4 @@ function StatCard({ value, label }) {
       </div>
     </div>
   );
-
-  /*<Link to="/library">
-  Ver biblioteca completa
-</Link>*/
-
 }
