@@ -178,28 +178,57 @@ export default function Profile() {
             border-[#2A2A2A]
           "
         >
-          <div
-            className="
-              h-48
-              bg-[#252525]
-              flex
-              items-center
-              justify-center
-              text-gray-500
-            "
-          >
-            Carátula
-          </div>
+          <div className="h-48 overflow-hidden">
+  {game.coverImage ? (
+    <img
+      src={game.coverImage}
+      alt={game.title}
+      className="
+        w-full
+        h-full
+        object-cover
+      "
+    />
+  ) : (
+    <div
+      className="
+        h-full
+        bg-[#252525]
+        flex
+        items-center
+        justify-center
+        text-gray-500
+      "
+    >
+      Sin imagen
+    </div>
+  )}
+</div>
 
           <div className="p-3">
-            <h3 className="font-semibold text-sm">
-              {game.title}
-            </h3>
+  <h3 className="font-semibold text-sm">
+    {game.title}
+  </h3>
 
-            <p className="text-gray-400 text-xs mt-1">
-              {game.status}
-            </p>
-          </div>
+  <span
+    className={`
+      inline-block
+      mt-2
+      px-2
+      py-1
+      rounded-full
+      text-xs
+      font-semibold
+      ${game.status === "Pendiente" ? "bg-orange-500 text-white" : ""}
+      ${game.status === "Jugando" ? "bg-blue-500 text-white" : ""}
+      ${game.status === "Completado" ? "bg-green-500 text-white" : ""}
+      ${game.status === "Platinado" ? "bg-gray-300 text-black" : ""}
+      ${game.status === "Abandonado" ? "bg-red-500 text-white" : ""}
+    `}
+  >
+    {game.status}
+  </span>
+</div>
         </div>
       ))}
     </div>

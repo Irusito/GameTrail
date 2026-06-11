@@ -30,6 +30,14 @@ export default function Library() {
     fetchGames();
   }, []);
 
+const [showForm, setShowForm] = useState(false);
+
+const [title, setTitle] = useState("");
+const [results, setResults] = useState([]);
+
+const [platform, setPlatform] =
+  useState("PC");
+
   const filters = [
     "Todos",
     "Pendiente",
@@ -103,6 +111,57 @@ async function updateStatus(id, newStatus) {
   }
 }
 
+async function handleSearch() {
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/rawg/search?q=${title}`
+    );
+
+    const data = await response.json();
+
+    setResults(data);
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function addGameFromRAWG(game) {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+      "http://localhost:5000/api/games",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+  title: game.name,
+  status: "Pendiente",
+  platform,
+
+  coverImage: game.background_image,
+  releaseDate: game.released,
+}),
+      }
+    );
+
+    const newGame = await response.json();
+
+    setGames([...games, newGame]);
+
+    setResults([]);
+    setTitle("");
+    setShowForm(false);
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 function getStatusStyle(status) {
   switch (status) {
     case "Pendiente":
@@ -128,9 +187,145 @@ function getStatusStyle(status) {
   return (
     <main className="max-w-7xl mx-auto px-6 py-12">
 
-      <h1 className="text-4xl font-bold mb-8">
-        Mi Biblioteca
-      </h1>
+      <div className="flex justify-between items-center mb-8">
+  <h1 className="text-4xl font-bold">
+    Mi Biblioteca
+  </h1>
+
+  <button
+    onClick={() =>
+      setShowForm(!showForm)
+    }
+    className="
+      bg-[#089e62]
+      hover:bg-green-500
+      px-5
+      py-2
+      rounded-lg
+      font-semibold
+      transition
+    "
+  >
+    + Añadir videojuego
+  </button>
+</div>
+
+{
+  showForm && (
+    <div
+      className="
+        bg-[#121212]
+        border
+        border-[#2A2A2A]
+        rounded-xl
+        p-6
+        mb-8
+      "
+    >
+      <input
+        type="text"
+        placeholder="Título"
+        value={title}
+        onChange={(e) =>
+          setTitle(e.target.value)
+        }
+        className="
+          w-full
+          p-3
+          rounded-lg
+          bg-[#1A1A1A]
+          mb-4
+        "
+      />
+
+      <select
+        value={platform}
+        onChange={(e) =>
+          setPlatform(e.target.value)
+        }
+        className="
+          w-full
+          p-3
+          rounded-lg
+          bg-[#1A1A1A]
+          mb-4
+        "
+      >
+        <option>PC</option>
+        <option>PS5</option>
+        <option>Xbox Series</option>
+        <option>Switch</option>
+      </select>
+
+      <button
+        onClick={handleSearch}
+        className="
+          bg-blue-600
+          hover:bg-blue-500
+          px-5
+          py-2
+          rounded-lg
+        "
+      >
+        Buscar
+      </button>
+
+      {results.length > 0 && (
+        <div className="mt-6 space-y-3">
+          {results.slice(0, 10).map((game) => (
+            
+            <div
+              key={game.id}
+              className="
+                bg-[#1A1A1A]
+                rounded-lg
+                p-4
+                flex
+                justify-between
+                items-center
+              "
+            >
+              <img
+  src={game.background_image}
+  alt={game.name}
+  className="
+    w-16
+    h-20
+    object-cover
+    rounded
+  "
+/>
+              <div>
+                <h3 className="font-semibold">
+                  {game.name}
+                </h3>
+
+                <p className="text-gray-400 text-sm">
+                  {game.released}
+                </p>
+              </div>
+
+              <button
+                onClick={() =>
+                  addGameFromRAWG(game)
+                }
+                className="
+                  bg-green-600
+                  hover:bg-green-500
+                  px-4
+                  py-2
+                  rounded-lg
+                "
+              >
+                Añadir
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
       {/* Filtros */}
 
@@ -191,20 +386,17 @@ function getStatusStyle(status) {
               transition
             "
           >
-            {/* Carátula provisional */}
-
-            <div
+          <div className="h-64 overflow-hidden">
+            <img
+              src={game.coverImage}
+              alt={game.title}
               className="
-                h-64
-                bg-[#1A1A1A]
-                flex
-                items-center
-                justify-center
-                text-gray-500
+             w-full
+              h-full
+              object-cover
               "
-            >
-              Carátula
-            </div>
+            />
+          </div>
 
             {/* Información */}
 
@@ -231,6 +423,11 @@ function getStatusStyle(status) {
               <p className="text-gray-500 text-sm">
                 {game.platform}
               </p>
+              {game.releaseDate && (
+  <p className="text-gray-400 text-xs mt-1">
+    Lanzamiento: {game.releaseDate}
+  </p>
+)}
               <select
   value={game.status}
   onChange={(e) =>

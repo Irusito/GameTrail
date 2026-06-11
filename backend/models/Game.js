@@ -29,6 +29,13 @@ const gameSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    coverImage: {
+      type: String,
+    },
+
+    releaseDate: {
+      type: String,
+    },
   },
   {
     timestamps: true,
