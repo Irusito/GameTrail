@@ -13,6 +13,8 @@ const gameRoutes = require("./routes/gameRoutes");
 
 const rawgRoutes = require("./routes/rawgRoutes");
 
+const userRoutes = require("./routes/userRoutes");
+
 // Conexión a MongoDB
 connectDB();
 
@@ -24,6 +26,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/games", gameRoutes);
 app.use("/api/rawg", rawgRoutes);
+app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend funcionando");

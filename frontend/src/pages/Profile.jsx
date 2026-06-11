@@ -97,7 +97,28 @@ export default function Profile() {
           >
             Editar perfil
           </button>
+          <button
+  onClick={() => {
+    navigator.clipboard.writeText(
+      `${window.location.origin}/profile/${user.id}`
+    );
 
+    alert(
+      "Enlace copiado al portapapeles"
+    );
+  }}
+  className="
+    mt-3
+    bg-[#3C91E6]
+    hover:bg-blue-500
+    px-5
+    py-2
+    rounded-lg
+    font-semibold
+  "
+>
+  Compartir perfil
+</button>
         </div>
       </section>
 

@@ -68,11 +68,11 @@ duration-300
 
           <div className="bg-[#121212] p-8 rounded-xl border border-[#222]">
             <h3 className="text-2xl font-bold mb-4">
-              Valoraciones
+              Progreso
             </h3>
 
             <p className="text-[#BDBDBD]">
-              Puntúa tus juegos favoritos y crea tu propio historial.
+              Cambia el estado de tus juegos conforme avances con ellos.
             </p>
           </div>
 

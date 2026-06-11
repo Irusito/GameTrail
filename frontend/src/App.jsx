@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Library from "./pages/Library";
 import AddGame from "./pages/AddGame";
+import PublicProfile from "./pages/PublicProfile";
 
 export default function App() {
   return (
@@ -55,6 +56,10 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+  path="/profile/:id"
+  element={<PublicProfile />}
+/>
         </Routes>
       </div>
     </BrowserRouter>
