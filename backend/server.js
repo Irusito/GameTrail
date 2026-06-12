@@ -1,3 +1,11 @@
+/*
+  GameTrail Backend
+
+  API REST con Express.
+  Gestiona autenticación JWT, biblioteca de videojuegos,
+  integración con RAWG y acceso a MongoDB.
+*/
+
 require("dotenv").config();
 
 const express = require("express");

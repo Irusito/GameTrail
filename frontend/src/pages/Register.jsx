@@ -8,84 +8,85 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] =
-  useState("");
+    useState("");
 
- async function handleSubmit() {
-  if (!username || !email || !password) {
-  setErrorMessage(
-    "Todos los campos son obligatorios"
-  );
+  // Validación básica de campos antes de enviar la petición al servidor.
+  async function handleSubmit() {
+    if (!username || !email || !password) {
+      setErrorMessage(
+        "Todos los campos son obligatorios"
+      );
 
-  setTimeout(() => {
-    setErrorMessage("");
-  }, 3800);
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3800);
 
-  return;
-}
+      return;
+    }
 
-if (password.length < 6) {
-  setErrorMessage(
-    "La contraseña debe tener al menos 6 caracteres"
-  );
+    if (password.length < 6) {
+      setErrorMessage(
+        "La contraseña debe tener al menos 6 caracteres"
+      );
 
-  setTimeout(() => {
-    setErrorMessage("");
-  }, 3800);
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3800);
 
-  return;
-}
-  try {
-    const response = await fetch(
-      "http://localhost:5000/api/auth/register",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-        }),
+      return;
+    }
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username,
+            email,
+            password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (response.ok) {
+        navigate("/login", {
+          state: {
+            successMessage:
+              "Usuario registrado correctamente. Inicia sesión para continuar.",
+          },
+        });
       }
-    );
 
-    const data = await response.json();
+      if (!response.ok) {
+        setErrorMessage(
+          data.message ||
+          "Error al crear la cuenta"
+        );
 
-    console.log(data);
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 3800);
 
-    if (response.ok) {
-  navigate("/login", {
-    state: {
-      successMessage:
-        "Usuario registrado correctamente. Inicia sesión para continuar.",
-    },
-  });
-}
+        return;
+      }
 
-    if (!response.ok) {
-  setErrorMessage(
-    data.message ||
-    "Error al crear la cuenta"
-  );
-
-  setTimeout(() => {
-    setErrorMessage("");
-  }, 3800);
-
-  return;
-}
-
-  } catch (error) {
-    console.error(error);
+    } catch (error) {
+      console.error(error);
+    }
   }
-}
 
   return (
     <main className="flex justify-center items-center py-20">
       {errorMessage && (
-  <div
-    className="
+        <div
+          className="
       fixed
       bottom-8
       left-1/2
@@ -100,12 +101,12 @@ if (password.length < 6) {
       border
       border-red-400
     "
-  >
-    {errorMessage}
-  </div>
-)}
+        >
+          {errorMessage}
+        </div>
+      )}
       <div className="w-full max-w-md bg-[#121212] border border-[#2A2A2A] rounded-2xl p-8">
-        
+
         <h1 className="text-4xl font-bold mb-8 text-center">
           Crear cuenta
         </h1>
@@ -146,7 +147,7 @@ if (password.length < 6) {
           >
             Registrarse
           </button>
-       
+
         </div>
       </div>
     </main>

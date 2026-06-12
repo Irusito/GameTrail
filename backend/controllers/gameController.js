@@ -1,5 +1,13 @@
+/*
+  Controlador de videojuegos.
+
+  Gestiona las operaciones CRUD de la biblioteca
+  asociada al usuario autenticado.
+*/
+
 const Game = require("../models/Game");
 //CRUD
+
 //READ
 const getGames = async (req, res) => {
   try {

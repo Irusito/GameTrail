@@ -5,22 +5,22 @@ export default function Home() {
     <main>
       <section className="max-w-6xl mx-auto px-6 py-32 text-center">
         <h1 className="text-7xl md:text-8xl font-bold mb-6">
-  <span className="text-[#3C91E6]">Game</span>
-  <span className="text-[#FF4242]">Trail</span>
-</h1>
+          <span className="text-[#3C91E6]">Game</span>
+          <span className="text-[#FF4242]">Trail</span>
+        </h1>
 
         <p className="text-xl text-[#BDBDBD] max-w-3xl mx-auto mb-10">
- Organiza los videojuegos que has jugado,
-completado o tienes pendientes. <br></br>
+          Organiza los videojuegos que has jugado,
+          completado o tienes pendientes. <br></br>
 
-Construye tu biblioteca personal y comparte
-tu trayectoria con otros jugadores.
-</p>
+          Construye tu biblioteca personal y comparte
+          tu trayectoria con otros jugadores.
+        </p>
 
         <div className="flex justify-center gap-4">
           <Link
             to="/register"
-           className="
+            className="
 border-2
 border-[#4DA3FF]
 text-[#4DA3FF]
@@ -37,7 +37,7 @@ duration-300
 
           <Link
             to="/login"
-className="
+            className="
 border-2
 border-[#FF4242]
 text-[#FF4242]

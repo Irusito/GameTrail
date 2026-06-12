@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+// Registro de nuevos usuarios
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -30,7 +31,7 @@ const register = async (req, res) => {
         message: "El usuario ya existe",
       });
     }
-
+    // La contraseña se almacena cifrada utilizando bcrypt.
     const hashedPassword = await bcrypt.hash(
       password,
       10
@@ -56,6 +57,7 @@ const register = async (req, res) => {
   }
 };
 
+// Inicio de sesión y generación del JWT
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;

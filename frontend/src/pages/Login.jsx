@@ -11,24 +11,25 @@ export default function Login() {
   const [successMessage, setSuccessMessage] = useState(location.state?.successMessage || "");
 
   useEffect(() => {
-  if (successMessage) {
-    const timer = setTimeout(() => {
-      setSuccessMessage("");
-    }, 3800);
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage("");
+      }, 3800);
 
-    return () => clearTimeout(timer);
-  }
-}, [successMessage]);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
 
   useEffect(() => {
-  if (location.state?.successMessage) {
-    window.history.replaceState(
-      {},
-      document.title
-    );
-  }
-}, []);
-
+    if (location.state?.successMessage) {
+      window.history.replaceState(
+        {},
+        document.title
+      );
+    }
+  }, []);
+  // Valida las credenciales del usuario y almacena
+  // el token JWT para mantener la sesión iniciada.
   async function handleSubmit() {
     try {
       const response = await fetch(
@@ -44,34 +45,34 @@ export default function Login() {
           }),
         }
       );
-const data = await response.json();
-  if (!response.ok) {
-  setErrorMessage(
-  data.message ||
-  "Credenciales incorrectos, vuelva a intentarlo"
-);
+      const data = await response.json();
+      if (!response.ok) {
+        setErrorMessage(
+          data.message ||
+          "Credenciales incorrectos, vuelva a intentarlo"
+        );
 
-  setTimeout(() => {
-    setErrorMessage("");
-  }, 3800);
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 3800);
 
-  return;
-}
+        return;
+      }
+      // Persistencia de sesión en el navegador.
+      localStorage.setItem(
+        "token",
+        data.token
+      );
 
-localStorage.setItem(
-  "token",
-  data.token
-);
+      localStorage.setItem(
+        "user",
+        JSON.stringify(data.user)
+      );
 
-localStorage.setItem(
-  "user",
-  JSON.stringify(data.user)
-);
+      window.location.href = "/profile";
 
-window.location.href = "/profile";
-
-console.log("Usuario logueado");
-console.log(data);
+      console.log("Usuario logueado");
+      console.log(data);
 
     } catch (error) {
       console.error(error);
@@ -79,11 +80,11 @@ console.log(data);
   }
 
   return (
-  <main className="flex justify-center items-center py-20">
+    <main className="flex justify-center items-center py-20">
 
-    {successMessage && (
-      <div
-        className="
+      {successMessage && (
+        <div
+          className="
           fixed
           bottom-8
           left-1/2
@@ -98,14 +99,14 @@ console.log(data);
           border
           border-green-400
         "
-      >
-        {successMessage}
-      </div>
-    )}
+        >
+          {successMessage}
+        </div>
+      )}
 
-    {errorMessage && (
-      <div
-        className="
+      {errorMessage && (
+        <div
+          className="
           fixed
           bottom-8
           left-1/2
@@ -120,10 +121,10 @@ console.log(data);
           border
           border-red-400
         "
-      >
-        {errorMessage}
-      </div>
-    )}
+        >
+          {errorMessage}
+        </div>
+      )}
       <div className="w-full max-w-md bg-[#121212] border border-[#2A2A2A] rounded-2xl p-8">
 
         <h1 className="text-4xl font-bold mb-8 text-center">

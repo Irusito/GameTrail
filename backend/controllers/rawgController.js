@@ -1,3 +1,4 @@
+// Comunicación con la API externa RAWG para recuperar información de videojuegos.
 const searchGames = async (req, res) => {
   try {
     const query = req.query.q;

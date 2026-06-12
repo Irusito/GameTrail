@@ -8,7 +8,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Library from "./pages/Library";
-import AddGame from "./pages/AddGame";
 import PublicProfile from "./pages/PublicProfile";
 
 export default function App() {
@@ -48,14 +47,6 @@ export default function App() {
             }
           />
 
-          <Route
-            path="/add-game"
-            element={
-              <ProtectedRoute>
-                <AddGame />
-              </ProtectedRoute>
-            }
-          />
           <Route
   path="/profile/:id"
   element={<PublicProfile />}

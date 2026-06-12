@@ -1,3 +1,9 @@
+/*
+  Middleware de autenticación.
+
+  Verifica que el JWT enviado por el usuario sea válido
+  antes de permitir el acceso a rutas protegidas.
+*/
 const jwt = require("jsonwebtoken");
 
 const protect = (req, res, next) => {
@@ -15,6 +21,7 @@ const protect = (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
 
+    // Comprueba que el token sea válido y no haya expirado.
     const decoded = jwt.verify(
       token,
       process.env.JWT_SECRET

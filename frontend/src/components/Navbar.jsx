@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 export default function Navbar() {
-const user = JSON.parse(
-  localStorage.getItem("user") || "null"
-);
+  const user = JSON.parse(
+    localStorage.getItem("user") || "null"
+  );
 
   function handleLogout() {
     localStorage.removeItem("token");
@@ -14,9 +15,12 @@ const user = JSON.parse(
 
   return (
     <nav className="flex justify-between items-center px-8 py-5 border-b border-[#222]">
-      <Link to="/" className="text-3xl font-bold">
-        <span className="text-[#3C91E6]">G</span>
-        <span className="text-[#FF4242]">T</span>
+      <Link to="/">
+        <img
+          src={logo}
+          alt="GameTrail"
+          className="h-12"
+        />
       </Link>
 
       <div className="flex gap-6 items-center">

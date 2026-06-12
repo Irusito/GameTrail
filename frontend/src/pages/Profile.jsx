@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 export default function Profile() {
   const user = JSON.parse(
-  localStorage.getItem("user") || "null"
-);
+    localStorage.getItem("user") || "null"
+  );
 
   const [games, setGames] = useState([]);
 
@@ -32,6 +32,7 @@ export default function Profile() {
     fetchGames();
   }, []);
 
+  // Cálculo dinámico de estadísticas a partir de la biblioteca del usuario.
   const pendingCount = games.filter(
     (game) => game.status === "Pendiente"
   ).length;
@@ -48,6 +49,7 @@ export default function Profile() {
     (game) => game.status === "Platinado"
   ).length;
 
+  // Selecciona los últimos videojuegos añadidos para mostrarlos en el perfil.
   const recentGames = games.slice(-4).reverse();
 
   return (
@@ -98,16 +100,16 @@ export default function Profile() {
             Editar perfil
           </button>
           <button
-  onClick={() => {
-    navigator.clipboard.writeText(
-      `${window.location.origin}/profile/${user.id}`
-    );
+            onClick={() => {
+              navigator.clipboard.writeText(
+                `${window.location.origin}/profile/${user.id}`
+              );
 
-    alert(
-      "Enlace copiado al portapapeles"
-    );
-  }}
-  className="
+              alert(
+                "Enlace copiado al portapapeles"
+              );
+            }}
+            className="
     mt-3
     bg-[#3C91E6]
     hover:bg-blue-500
@@ -116,9 +118,9 @@ export default function Profile() {
     rounded-lg
     font-semibold
   "
->
-  Compartir perfil
-</button>
+          >
+            Compartir perfil
+          </button>
         </div>
       </section>
 
@@ -133,36 +135,36 @@ export default function Profile() {
           mt-8
         "
       >
-        
-<StatCard
-  value={pendingCount}
-  label="Pendientes"
-  color="bg-orange-500"
-/>
 
-<StatCard
-  value={playingCount}
-  label="Jugando"
-  color="bg-blue-500"
-/>
+        <StatCard
+          value={pendingCount}
+          label="Pendientes"
+          color="bg-orange-500"
+        />
 
-<StatCard
-  value={completedCount}
-  label="Completados"
-  color="bg-green-500"
-/>
+        <StatCard
+          value={playingCount}
+          label="Jugando"
+          color="bg-blue-500"
+        />
 
-<StatCard
-  value={platinumCount}
-  label="Platinados"
-  color="bg-gray-300"
-/>
+        <StatCard
+          value={completedCount}
+          label="Completados"
+          color="bg-green-500"
+        />
+
+        <StatCard
+          value={platinumCount}
+          label="Platinados"
+          color="bg-gray-300"
+        />
       </section>
 
       {/* Últimos videojuegos */}
 
       <section
-  className="
+        className="
     bg-[#121212]
     border
     border-[#2A2A2A]
@@ -170,49 +172,49 @@ export default function Profile() {
     p-6
     mt-8
   "
->
-  <h2 className="text-2xl font-bold mb-6">
-    Últimos videojuegos añadidos
-  </h2>
+      >
+        <h2 className="text-2xl font-bold mb-6">
+          Últimos videojuegos añadidos
+        </h2>
 
-  {recentGames.length === 0 ? (
-    <p className="text-gray-400">
-      Todavía no has añadido videojuegos.
-    </p>
-  ) : (
-    <div
-      className="
+        {recentGames.length === 0 ? (
+          <p className="text-gray-400">
+            Todavía no has añadido videojuegos.
+          </p>
+        ) : (
+          <div
+            className="
         grid
         grid-cols-2
         md:grid-cols-4
         gap-4
       "
-    >
-      {recentGames.map((game) => (
-        <div
-          key={game._id}
-          className="
+          >
+            {recentGames.map((game) => (
+              <div
+                key={game._id}
+                className="
             bg-[#1A1A1A]
             rounded-xl
             overflow-hidden
             border
             border-[#2A2A2A]
           "
-        >
-          <div className="h-48 overflow-hidden">
-  {game.coverImage ? (
-    <img
-      src={game.coverImage}
-      alt={game.title}
-      className="
+              >
+                <div className="h-48 overflow-hidden">
+                  {game.coverImage ? (
+                    <img
+                      src={game.coverImage}
+                      alt={game.title}
+                      className="
         w-full
         h-full
         object-cover
       "
-    />
-  ) : (
-    <div
-      className="
+                    />
+                  ) : (
+                    <div
+                      className="
         h-full
         bg-[#252525]
         flex
@@ -220,19 +222,19 @@ export default function Profile() {
         justify-center
         text-gray-500
       "
-    >
-      Sin imagen
-    </div>
-  )}
-</div>
+                    >
+                      Sin imagen
+                    </div>
+                  )}
+                </div>
 
-          <div className="p-3">
-  <h3 className="font-semibold text-sm">
-    {game.title}
-  </h3>
+                <div className="p-3">
+                  <h3 className="font-semibold text-sm">
+                    {game.title}
+                  </h3>
 
-  <span
-    className={`
+                  <span
+                    className={`
       inline-block
       mt-2
       px-2
@@ -246,15 +248,15 @@ export default function Profile() {
       ${game.status === "Platinado" ? "bg-gray-300 text-black" : ""}
       ${game.status === "Abandonado" ? "bg-red-500 text-white" : ""}
     `}
-  >
-    {game.status}
-  </span>
-</div>
-        </div>
-      ))}
-    </div>
-  )}
-</section>
+                  >
+                    {game.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
 
     </main>
   );
