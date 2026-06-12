@@ -6,6 +6,21 @@ const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
+    // Validaciones
+
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        message: "Todos los campos son obligatorios",
+      });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({
+        message:
+          "La contraseña debe tener al menos 6 caracteres",
+      });
+    }
+
     const existingUser = await User.findOne({
       $or: [{ email }, { username }],
     });
@@ -16,25 +31,29 @@ const register = async (req, res) => {
       });
     }
 
- const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(
+      password,
+      10
+    );
 
-const user = await User.create({
-  username,
-  email,
-  password: hashedPassword,
-});
+    const user = await User.create({
+      username,
+      email,
+      password: hashedPassword,
+    });
 
     res.status(201).json({
       message: "Usuario registrado",
       user,
     });
-  } catch (error) {
-  console.error(error);
 
-  res.status(500).json({
-    message: error.message,
-  });
-}
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 };
 
 const login = async (req, res) => {

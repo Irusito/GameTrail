@@ -34,6 +34,7 @@ const [showForm, setShowForm] = useState(false);
 
 const [title, setTitle] = useState("");
 const [results, setResults] = useState([]);
+const [message, setMessage] = useState("");
 
 const [platform, setPlatform] =
   useState("PC");
@@ -71,6 +72,7 @@ const [platform, setPlatform] =
     setGames(
       games.filter((game) => game._id !== id)
     );
+    showMessage("Videojuego eliminado");
 
   } catch (error) {
     console.error(error);
@@ -106,6 +108,9 @@ async function updateStatus(id, newStatus) {
       )
     );
 
+    showMessage(
+  `Estado actualizado a ${newStatus}`
+);
   } catch (error) {
     console.error(error);
   }
@@ -156,6 +161,7 @@ async function addGameFromRAWG(game) {
     setResults([]);
     setTitle("");
     setShowForm(false);
+    showMessage("Videojuego añadido correctamente");
 
   } catch (error) {
     console.error(error);
